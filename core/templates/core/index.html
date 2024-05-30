@@ -1,0 +1,49 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class='mt-6 px-6 py-12 bg-gray-100 rounded-xl'>
+    <h2 class='mb-12 text-2xl text-center'>NEW PRODUCTS, PROJECT BUILDS, & MORE</h2>
+
+    <div class='grid grid-cols-1 md:grid-cols-3 gap-3'>
+        {% for item in items %}
+        <article class="overflow-hidden bg-white rounded-lg shadow-lg">
+            <a href='{% url 'item:detail' item.id %}'>
+                <img alt="Placeholder" class="block h-auto w-full" src="{{item.image.url}}">
+            </a>
+            <header class="flex items-center justify-between leading-tight p-2 md:p-4">
+                <h1 class="text-lg">
+                    <a class="no-underline hover:underline text-black" href="#">
+                        {{item.name}}
+                    </a>
+                </h1>
+                <p class="text-grey-darker text-sm">
+                    {{item.created_at}}
+                </p>
+            </header>
+            <footer class="flex items-center justify-between leading-none p-2 md:p-4">
+                <a class="flex items-center no-underline hover:underline text-black" href="#">
+                    <p class="ml-2 text-sm">
+                        Seller: {{item.created_by}}
+                    </p>
+                </a>
+                <a class="no-underline text-black text-2xl hover:text-red-dark" href="#">
+                    ${{item.price}}
+                </a>
+            </footer>
+        </article>
+        {% endfor %}
+    </div>
+</div>
+
+<div class='mt-6 px-6 py-12 bg-gray-100 rounded-xl'>
+    <h2 class='mb-12 text-2xl text-center'>Categories</h2>
+    <div class='grid grid-cols-1 md:grid-cols-3 gap-3'>
+        {% for category in categories %}
+        <div class='p-6 bg-white rounded-xl'>
+            <h2 class='flex justify-center'>{{category.name}}</h2>
+            <p class='flex justify-center'>{{category.items.count}}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

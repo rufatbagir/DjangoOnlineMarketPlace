@@ -1,0 +1,62 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+    {{ item.name }}
+{% endblock %}
+
+{% block content %}
+    <div class='grid grid-cols-1 md:grid-cols-2 gap-6 py-12'>
+        <div class='md:col-span-1'>
+            <img src='{{ item.image.url }}' class='rounded-xl mx-auto md:mx-0'>
+        </div>
+        <div class='md:col-span-1 p-6 rounded-xl bg-gray-100'>
+        <p class='text-black text-3xl font-bold mb-2'>Price: ${{ item.price }}</p>
+            <p class='text-blue-500 mb-2'>Seller: {{ item.created_by.username }}</p>
+            <h1 class='text-xl mb-4'>{{ item.name }}</h1>
+            {% if item.description %}
+                <p class='text-gray-500 py-2'>{{ item.description }}</p>
+            {% endif %}
+
+            {% if request.user == item.created_by %}
+            <div class='mt-6 p-6 bg-white rounded-xl'>
+            <p>This is your item</p>
+
+
+            <a href='{% url 'item:edit' item.id %}' class='inline-block mt-6 mr-4 px-6 py-3 text-lg font-semibold bg-yellow-500 text-white rounded-xl'>Edit</a>
+
+            <a href='{% url 'item:delete' item.id  %}' class='inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl'>Delete</a>
+            
+
+            </div>
+
+            {% else %}
+            
+            <div class='mt-4'>
+                <a href='/' class='text-xl bg-green-500 px-4 py-2 my-4 rounded-xl text-white'>Contact seller</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class='mt-6 px-6 py-12 bg-gray-100 rounded-xl'>
+        <h2 class='mb-8 text-2xl text-center'>Related RCs</h2>
+        <div class='grid grid-cols-1 md:grid-cols-3 gap-3'>
+            {% for item in related_items %}
+                <div class='bg-white rounded-xl'>
+                    <a href='{% url 'item:detail' item.id %}'>
+                        <div class='mt-2 mx-2'>
+                            <img src='{{ item.image.url }}' class='hover:animate-pulse mx-auto' />
+                        </div>
+                        <div class='px-6 py-2 bg-white rounded-b-xl'>
+                            <h2 class='text-2xl'>{{ item.name }}</h2>
+                            <div class='flex justify-between'>
+                                <p class='text-blue-500 text-xl'>${{ item.price }}</p>
+                                <a href='{% url 'item:detail' item.id %}' class='text-xl text-white bg-black px-4 py-2 rounded-xl'>Details</a>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
